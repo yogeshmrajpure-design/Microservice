@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     stages {
+    stage('Check Docker') {
+        steps {
+            sh 'which docker'
+            sh 'docker version'
+        }
+    }
+}
+    stages {
         stage('Build & Tag Docker Image') {
             steps {
                 script {
