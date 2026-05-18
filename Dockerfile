@@ -19,11 +19,10 @@ WORKDIR /app
 # Copy all project files
 COPY . .
 
-# Make gradlew executable
-RUN chmod +x ./gradlew
-
-# Download dependencies
-RUN ./gradlew downloadRepos
+# Fix gradlew format and permissions
+RUN sed -i 's/\r$//' gradlew && \
+    chmod +x gradlew && \
+    ./gradlew downloadRepos
 
 # Build application
 RUN ./gradlew installDist
