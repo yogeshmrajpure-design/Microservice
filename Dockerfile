@@ -20,7 +20,7 @@ WORKDIR /app
 COPY . .
 
 # Make gradlew executable
-RUN chmod +x gradlew
+RUN chmod +x ./gradlew
 
 # Download dependencies
 RUN ./gradlew downloadRepos
