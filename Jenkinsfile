@@ -1,23 +1,23 @@
 pipeline {
-    agent any
+    agent any 
 
-    stages {
-
-        stage('Deploy To Kubernetes') {
+    stages{
+        stages('Deploy To Kubernetes'){
             steps {
-                sh '''
-                kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f deployment-service.yml
-                '''
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'EKS-1', contextName: '', credentialsId: 'k8-token_new_one', namespace: 'webapps', serverUrl: 'https://E52DA05CA5963A1B5F8895104CD686F8.gr7.ap-south-1.eks.amazonaws.com']]) {
+                    sh "kubectl apply -f deployment-service.yml"
+                    sleep 60
+                }
             }
         }
-
-        stage('verify Deployment') {
+    }
+    stages{
+        stages('verify Deployment'){
             steps {
-                sh '''
-                kubectl --kubeconfig=/var/lib/jenkins/.kube/config get svc -n webapps
-                '''
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'EKS-1', contextName: '', credentialsId: 'k8-token_new_one', namespace: 'webapps', serverUrl: 'https://E52DA05CA5963A1B5F8895104CD686F8.gr7.ap-south-1.eks.amazonaws.com']]) {
+                    sh "kubectl get svc -n webapps"
+                }
             }
         }
-
     }
 }
